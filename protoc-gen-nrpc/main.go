@@ -320,6 +320,15 @@ var funcMap = template.FuncMap{
 		}
 		return sd.GetName()
 	},
+	"ServiceJSONUseProtoNames": func(sd *descriptor.ServiceDescriptorProto) bool {
+		if opts := sd.GetOptions(); opts != nil {
+			s := proto.GetExtension(opts, nrpc.E_ServiceJSONUseProtoNames)
+			if value, ok := s.(bool); ok {
+				return value
+			}
+		}
+		return false
+	},
 	"ServiceNeedsHandler": func(sd *descriptor.ServiceDescriptorProto) bool {
 		for _, md := range sd.GetMethod() {
 			if md.GetInputType() != ".nrpc.NoRequest" {
